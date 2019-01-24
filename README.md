@@ -12,7 +12,7 @@ Everything (i.e. images and source codes) used in this tutorial, rather than the
 
 The source code used in this tutorial is originally published in my **GitHub** page here: https://github.com/ahmedfgad/NumPyANN
 
-**For contacting the author**  
+## For contacting the author  
 LinkedIn: https://www.linkedin.com/in/ahmedfgad  
 Facebook: https://www.facebook.com/ahmed.f.gadd  
 Twitter: https://twitter.com/ahmedfgad  

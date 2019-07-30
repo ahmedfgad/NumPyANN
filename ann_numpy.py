@@ -20,7 +20,7 @@ def train_network(num_iterations, weights, data_inputs, data_outputs, learning_r
             r1 = data_inputs[sample_idx, :]
             for idx in range(len(weights) - 1):
                 curr_weights = weights[idx]
-                r1 = numpy.matmul(x1=r1, curr_weights)
+                r1 = numpy.matmul(xr1, curr_weights)
                 if activation == "relu":
                     r1 = relu(r1)
                 elif activation == "sigmoid":

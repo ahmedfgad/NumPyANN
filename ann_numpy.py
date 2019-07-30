@@ -20,13 +20,13 @@ def train_network(num_iterations, weights, data_inputs, data_outputs, learning_r
             r1 = data_inputs[sample_idx, :]
             for idx in range(len(weights) - 1):
                 curr_weights = weights[idx]
-                r1 = numpy.matmul(a=r1, b=curr_weights)
+                r1 = numpy.matmul(r1, curr_weights)
                 if activation == "relu":
                     r1 = relu(r1)
                 elif activation == "sigmoid":
                     r1 = sigmoid(r1)
             curr_weights = weights[-1]
-            r1 = numpy.matmul(a=r1, b=curr_weights)
+            r1 = numpy.matmul(r1, curr_weights)
             predicted_label = numpy.where(r1 == numpy.max(r1))[0][0]
             desired_label = data_outputs[sample_idx]
             if predicted_label != desired_label:
@@ -39,7 +39,7 @@ def predict_outputs(weights, data_inputs, activation="relu"):
     for sample_idx in range(data_inputs.shape[0]):
         r1 = data_inputs[sample_idx, :]
         for curr_weights in weights:
-            r1 = numpy.matmul(a=r1, b=curr_weights)
+            r1 = numpy.matmul(r1, curr_weights)
             if activation == "relu":
                 r1 = relu(r1)
             elif activation == "sigmoid":

@@ -15,7 +15,7 @@ for fruit_dir in fruits:
     all_imgs = os.listdir(os.getcwd()+curr_dir)
     for img_file in all_imgs:
         if img_file.endswith(".jpg"): # Ensures reading only JPG files.
-            fruit_data = skimage.io.imread(fname=os.getcwd()+curr_dir+'\\'+img_file, as_grey=False)
+            fruit_data = skimage.io.imread(fname=os.path.sep.join([os.getcwd(), curr_dir, img_file], as_grey=False)
             fruit_data_hsv = skimage.color.rgb2hsv(rgb=fruit_data)
             hist = numpy.histogram(a=fruit_data_hsv[:, :, 0], bins=360)
             dataset_features[idx, :] = hist[0]

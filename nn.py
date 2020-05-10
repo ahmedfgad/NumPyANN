@@ -4,7 +4,7 @@ import numpy
 This project creates a neural network where the architecture has input and dense layers only. More layers will be added in the future. 
 The project only implements the forward pass of a neural network and no training algorithm is used.
 For training a neural network using the genetic algorithm, check this project (https://github.com/ahmedfgad/NeuralGenetic) in which the genetic algorithm is used for training the network.
-Feel free to leave an issue in this project (https://github.com/ahmedfgad/NumPyANN) in case something is not working propeprly or to ask for questions. I am also available for e-mails at ahmed.f.gad@gmail.com
+Feel free to leave an issue in this project (https://github.com/ahmedfgad/NumPyANN) in case something is not working properly or to ask for questions. I am also available for e-mails at ahmed.f.gad@gmail.com
 """
 
 def sigmoid(sop):

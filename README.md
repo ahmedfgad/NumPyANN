@@ -78,8 +78,8 @@ The constructor of the `nn.DenseLayer` class is responsible for initializing the
 Here is an example of creating 2 dense layers. Normally, the last dense layer is regarded as the output layer.
 
 ```python
-hidden_layer = nn.DenseLayer(num_neurons=HL2_neurons, previous_layer=input_layer, activation_function="relu")
-output_layer = nn.DenseLayer(num_neurons=num_outputs, previous_layer=hidden_layer2, activation_function="sigmoid")
+hidden_layer = nn.DenseLayer(num_neurons=50, previous_layer=input_layer, activation_function="relu")
+output_layer = nn.DenseLayer(num_neurons=num_outputs, previous_layer=hidden_layer, activation_function="sigmoid")
 ```
 
 After the data is prepared and the network architecture is created, next is to train the network.

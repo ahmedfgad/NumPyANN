@@ -2,6 +2,9 @@
 
 **NumPyANN** is an open-source project for building artificial neural networks in **Python 3** using **NumPy** from scratch. The main module of this project is the `nn.py` module which builds the network layers, implements the activations functions, trains the network, makes predictions, and more. 
 
+IMPORTANT
+*If you are coming for the tutorial code, then it has been moved to the [TutorialProject](https://github.com/ahmedfgad/NumPyANN/tree/master/TutorialProject) directory on 10 May 2020.*
+
 The purpose of this project is to only implement the **forward pass** of a neural network without using a training algorithm.
 
 For training a neural network using the genetic algorithm, check this project (https://github.com/ahmedfgad/NeuralGenetic) in which the genetic algorithm is used for training the network.

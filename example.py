@@ -34,10 +34,10 @@ output_layer = nn.DenseLayer(num_neurons=num_outputs, previous_layer=hidden_laye
 
 # Training the network.
 nn.train_network(num_epochs=10,
-                  last_layer=output_layer,
-                  data_inputs=data_inputs,
-                  data_outputs=data_outputs,
-                  learning_rate=0.01)
+                 last_layer=output_layer,
+                 data_inputs=data_inputs,
+                 data_outputs=data_outputs,
+                 learning_rate=0.01)
 
 # Using the trained network for predictions.
 predictions = nn.predict_outputs(last_layer=output_layer, data_inputs=data_inputs)

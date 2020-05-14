@@ -1,4 +1,5 @@
 import numpy
+import functools
 
 """
 This project creates a neural network where the architecture has input and dense layers only. More layers will be added in the future. 
@@ -7,46 +8,13 @@ For training a neural network using the genetic algorithm, check this project (h
 Feel free to leave an issue in this project (https://github.com/ahmedfgad/NumPyANN) in case something is not working properly or to ask for questions. I am also available for e-mails at ahmed.f.gad@gmail.com
 """
 
-def sigmoid(sop):
-    """
-    Applies the sigmoid function over the sum of products.
-    sop: The input to which the sigmoid function is applied.
-    Returns the result of the sigmoid function.
-    """
-    return 1.0 / (1 + numpy.exp(-1 * sop))
-
-def relu(sop):
-    """
-    Applies the rectified linear unit (ReLU) function over the sum of products.
-    sop: The input to which the sigmoid function is applied.
-    Returns the result of the ReLU function.
-    """
-    result = sop
-    result[sop < 0] = 0
-    return result
-
-def update_weights(weights, learning_rate):
-    """
-    Updates the network weights using the learning rate only. 
-    The purpose of this project is to only apply the forward pass of training a neural network. Thus, there is no optimization algorithm is used like the gradient descent.
-    For optimizing the neural network, check this project (https://github.com/ahmedfgad/NeuralGenetic) in which the genetic algorithm is used for training the network.
-    
-    weights: The current weights of the network.
-    learning_rate: The learning rate.
-    
-    It returns the new weights.
-    """
-    weights = numpy.array(weights)
-    new_weights = weights - learning_rate * weights
-    return new_weights
-
 def layers_weights(last_layer, initial=True):
     """
-    Creates a list holding the weights of all layers in the network.
-    
-    last_layer: The last layer in the network architecture.
+    Creates a list holding the weights of all layers in the neural network.
+
+    last_layer: A reference to the last (output) layer in the network architecture.
     initial: When True, the function returns the initial weights of the layers. When False, the trained weights of the layers are returned. The initial weights are only needed before network training starts. The trained weights are needed to predict the network outputs.
-    
+
     Returns a list (network_weights) holding the weights of the layers.
     """
     network_weights = []
@@ -56,10 +24,12 @@ def layers_weights(last_layer, initial=True):
         # If the 'initail' parameter is True, append the initial weights. Otherwise, append the trained weights.
         if initial == True:
             network_weights.append(layer.initial_weights)
-        else:
+        elif initial == False:
             network_weights.append(layer.trained_weights)
+        else:
+            raise ValueError("Unexpected value to the 'initial' parameter: {initial}.".format(initial=initial))
 
-        # Go to the next layer.
+        # Go to the previous layer.
         layer = layer.previous_layer
 
     # If the first layer in the network is not an input layer (i.e. an instance of the InputLayer class), raise an error.
@@ -69,13 +39,87 @@ def layers_weights(last_layer, initial=True):
     # Currently, the weights of the layers are in the reverse order. In other words, the weights of the first layer are at the last index of the 'network_weights' list while the weights of the last layer are at the first index.
     # Reversing the 'network_weights' list to order the layers' weights according to their location in the network architecture (i.e. the weights of the first layer appears at index 0 of the list).
     network_weights.reverse()
-    return network_weights
+    return numpy.array(network_weights)
+
+def layers_weights_as_vector(last_layer, initial=True):
+    """
+    Creates a list holding the weights of all layers in the network as a single vector.
+
+    last_layer: A reference to the last (output) layer in the network architecture.
+    initial: When True, the function returns the initial weights of the layers. When False, the trained weights of the layers are returned. The initial weights are only needed before network training starts. The trained weights are needed to predict the network outputs.
+    
+    Returns a list (network_weights) holding the weights of the layers as a vector.
+    """
+    network_weights = []
+
+    layer = last_layer
+    while "previous_layer" in layer.__init__.__code__.co_varnames:
+        # If the 'initail' parameter is True, append the initial weights. Otherwise, append the trained weights.
+        if initial == True:
+            vector = numpy.reshape(layer.initial_weights, newshape=(layer.initial_weights.size))
+#            vector = DenseLayer.to_vector(matrix=layer.initial_weights)
+            network_weights.extend(vector)
+        elif initial == False:
+            vector = numpy.reshape(layer.trained_weights, newshape=(layer.trained_weights.size))
+#            vector = DenseLayer.to_vector(array=layer.trained_weights)
+            network_weights.extend(vector)
+        else:
+            raise ValueError("Unexpected value to the 'initial' parameter: {initial}.".format(initial=initial))
+
+        # Go to the previous layer.
+        layer = layer.previous_layer
+
+    # If the first layer in the network is not an input layer (i.e. an instance of the InputLayer class), raise an error.
+    if not (type(layer) is InputLayer):
+        raise TypeError("The first layer in the network architecture must be an input layer.")
+
+    # Currently, the weights of the layers are in the reverse order. In other words, the weights of the first layer are at the last index of the 'network_weights' list while the weights of the last layer are at the first index.
+    # Reversing the 'network_weights' list to order the layers' weights according to their location in the network architecture (i.e. the weights of the first layer appears at index 0 of the list).
+    network_weights.reverse()
+    return numpy.array(network_weights)
+
+def layers_weights_as_matrix(last_layer, vector_weights):
+    """
+    Converts the network weights from vectors to matrices.
+
+    last_layer: A reference to the last (output) layer in the network architecture.
+    vector_weights: The network weights as vectors where the weights of each layer form a single vector.
+
+    Returns a list (network_weights) holding the weights of the layers as a vector.
+    """
+    network_weights = []
+
+    start = 0
+    layer = last_layer
+    vector_weights = vector_weights[::-1]
+    while "previous_layer" in layer.__init__.__code__.co_varnames:
+        layer_weights_shape = layer.initial_weights.shape
+        layer_weights_size = layer.initial_weights.size
+
+        weights_vector=vector_weights[start:start + layer_weights_size]
+#        matrix = DenseLayer.to_array(vector=weights_vector, shape=layer_weights_shape)
+        matrix = numpy.reshape(weights_vector, newshape=(layer_weights_shape))
+        network_weights.append(matrix)
+
+        start = start + layer_weights_size
+
+        # Go to the previous layer.
+        layer = layer.previous_layer
+
+    # If the first layer in the network is not an input layer (i.e. an instance of the InputLayer class), raise an error.
+    if not (type(layer) is InputLayer):
+        raise TypeError("The first layer in the network architecture must be an input layer.")
+
+    # Currently, the weights of the layers are in the reverse order. In other words, the weights of the first layer are at the last index of the 'network_weights' list while the weights of the last layer are at the first index.
+    # Reversing the 'network_weights' list to order the layers' weights according to their location in the network architecture (i.e. the weights of the first layer appears at index 0 of the list).
+    network_weights.reverse()
+    return numpy.array(network_weights)
 
 def layers_activations(last_layer):
     """
     Creates a list holding the activation functions of all layers in the network.
     
-    last_layer: The last layer in the network architecture.
+    last_layer: A reference to the last (output) layer in the network architecture.
     
     Returns a list (activations) holding the activation functions of the layers.
     """
@@ -85,7 +129,7 @@ def layers_activations(last_layer):
     while "previous_layer" in layer.__init__.__code__.co_varnames:
         activations.append(layer.activation_function)
 
-        # Go to the next layer.
+        # Go to the previous layer.
         layer = layer.previous_layer
 
     if not (type(layer) is InputLayer):
@@ -96,28 +140,34 @@ def layers_activations(last_layer):
     activations.reverse()
     return activations
 
-def update_layers_trained_weights(last_layer, final_weights):
+def sigmoid(sop):
     """
-    After the network weights are trained, the 'trained_weights' parameter of each layer is updated by the weights calculated after passing all the epochs.
-
-    last_layer: The last layer in the network architecture.
-    final_weights: The weights of the network after passing through all the epochs.
+    Applies the sigmoid function.
+    sop: The input to which the sigmoid function is applied.
+    Returns the result of the sigmoid function.
     """
-    layer = last_layer
-    layer_idx = len(final_weights) - 1
-    while "previous_layer" in layer.__init__.__code__.co_varnames:
-        layer.trained_weights = final_weights[layer_idx]
+    return 1.0 / (1 + numpy.exp(-1 * sop))
 
-        layer_idx = layer_idx - 1
-        # Go to the next layer.
-        layer = layer.previous_layer
-
-def train_network(num_epochs, last_layer, data_inputs, data_outputs, learning_rate):
+def relu(sop):
     """
-    Trains the neural networks.
+    Applies the rectified linear unit (ReLU) function.
+    sop: The input to which the sigmoid function is applied.
+    Returns the result of the ReLU function.
+    """
+    result = sop
+    result[sop < 0] = 0
+    return result
+
+def train_network(num_epochs, 
+                  last_layer, 
+                  data_inputs, 
+                  data_outputs, 
+                  learning_rate):
+    """
+    Trains the neural network.
     
     num_epochs: Number of epochs.
-    last_layer: The last layer in the network architecture.
+    last_layer: Reference to the last (output) layer in the network architecture.
     data_inputs: Data features.
     data_outputs: Data outputs.
     learning_rate: Learning rate.
@@ -125,7 +175,8 @@ def train_network(num_epochs, last_layer, data_inputs, data_outputs, learning_ra
     # To fetch the initial weights of the layer, the 'initial' argument is set to True.
     weights = layers_weights(last_layer, initial=True)
     activations = layers_activations(last_layer)
-
+    
+    network_error = 0
     for epoch in range(num_epochs):
         print("Epoch ", epoch)
         for sample_idx in range(data_inputs.shape[0]):
@@ -138,26 +189,66 @@ def train_network(num_epochs, last_layer, data_inputs, data_outputs, learning_ra
                 elif activations[idx] == "sigmoid":
                     r1 = sigmoid(r1)
             curr_weights = weights[-1]
+            r1 = numpy.matmul(r1, curr_weights)
+            predicted_label = numpy.where(r1 == numpy.max(r1))[0][0]
+            network_error = network_error + abs(predicted_label - data_outputs[sample_idx])
 
         # Updating the network weights once after completing an epoch (i.e. passing through all the samples).
-        weights = update_weights(weights,
-                                 learning_rate=0.001)
+        weights = update_weights(weights=weights,
+                                 network_error=network_error,
+                                 learning_rate=learning_rate)
 
     # Initially, the 'trained_weights' attribute of the layers are set to None. After the is trained, the 'trained_weights' attribute is updated by the trained weights using the update_layers_trained_weights() function.
     update_layers_trained_weights(last_layer, weights)
 
+def update_weights(weights, network_error, learning_rate):
+    """
+    Updates the network weights using the learning rate only. 
+    The purpose of this project is to only apply the forward pass of training a neural network. Thus, there is no optimization algorithm is used like the gradient descent.
+    For optimizing the neural network, check this project (https://github.com/ahmedfgad/NeuralGenetic) in which the genetic algorithm is used for training the network.
+    
+    weights: The current weights of the network.
+    network_error: The network error.
+    learning_rate: The learning rate.
+
+    It returns the new weights.
+    """
+    weights = numpy.array(weights)
+    new_weights = weights - network_error * learning_rate * weights
+    return new_weights
+
+def update_layers_trained_weights(last_layer, final_weights):
+    """
+    After the network weights are trained, the 'trained_weights' attribute of each layer is updated by the weights calculated after passing all the epochs (such weights are passed in the 'final_weights' parameter).
+    By just passing a reference to the last layer in the network (i.e. output layer) in addition to the final weights, this function updates the 'trained_weights' attribute of all layers.
+
+    last_layer: A reference to the last (output) layer in the network architecture.
+    final_weights: An array of weights of all layers in the network after passing through all the epochs.
+    """
+    layer = last_layer
+    layer_idx = len(final_weights) - 1
+    while "previous_layer" in layer.__init__.__code__.co_varnames:
+        layer.trained_weights = final_weights[layer_idx]
+
+        layer_idx = layer_idx - 1
+        # Go to the previous layer.
+        layer = layer.previous_layer
+
 def predict_outputs(last_layer, data_inputs):
     """
-    Use the trained weights for predicting the samples' outputs.
-    
-    last_layer: The last layer in the network architecture.
+    Uses the trained weights for predicting the samples' outputs.
+
+    last_layer: A reference to the last (output) layer in the network architecture.
     data_inputs: Data features.
-    
+
     Returns the predictions of all samples.
     """
     # To fetch the trained weights of the layer, the 'initial' argument is set to False.
     weights = layers_weights(last_layer, initial=False)
     activations = layers_activations(last_layer)
+
+    if len(weights) != len(activations):
+        raise TypeError("The length of layers {num_layers} is not equal to the number of activations functions {num_activations} and they must be equal.".format(num_layers=len(weights), num_activations=len(activations)))
 
     predictions = numpy.zeros(shape=(data_inputs.shape[0]))
     for sample_idx in range(data_inputs.shape[0]):
@@ -171,6 +262,39 @@ def predict_outputs(last_layer, data_inputs):
         predicted_label = numpy.where(r1 == numpy.max(r1))[0][0]
         predictions[sample_idx] = predicted_label
     return predictions
+
+def to_vector(array):
+    """
+    Converts a passed NumPy array (of any dimensionality) to its `array`  parameter into a a 1D vector and returns the vector.
+    
+    array: The NumPy array to be converted into a 1D vector.
+
+    Returns the array after being reshaped into a NumPy 1D vector.
+
+    Example: weights_vector = nn.DenseLayer.to_vector(array=array)
+    """
+    if not (type(array) is numpy.ndarray):
+        raise TypeError("An input of type numpy.ndarray is expected but an input of type {in_type} found.".format(in_type=type(array)))
+    return numpy.reshape(array, newshape=(array.size))
+
+def to_array(vector, shape):
+    """
+    Converts a passed vector to its `vector`  parameter into a a NumPy array and returns the array.
+
+    vector: The 1D vector to be converted into an array.
+    shape: The target shape of the array.
+
+    Returns the NumPy 1D vector after being reshaped into an array.
+
+    Example: weights_matrix = nn.DenseLayer.to_array(vector=vector, shape=shape)
+    """
+    if not (type(vector) is numpy.ndarray):
+        raise TypeError("An input of type numpy.ndarray is expected but an input of type {in_type} found.".format(in_type=type(vector)))
+    if vector.ndim > 1:
+        raise ValueError("A 1D NumPy array is expected but an array of {ndim} dimensions found.".format(ndim=vector.ndim))
+    if vector.size != functools.reduce(lambda x,y:x*y, shape, 1): # (operator.mul == lambda x,y:x*y
+        raise ValueError("Mismatch between the vector length and the array shape. A vector of length {vector_length} cannot be converted into a array of shape ({array_shape}).".format(vector_length=vector.size, array_shape=shape))
+    return numpy.reshape(vector, newshape=shape)
 
 class InputLayer:
     """
@@ -186,7 +310,6 @@ class DenseLayer:
     """
     Implementing the input dense (fully connected) layer of a neural network.
     """
-
     def __init__(self, num_neurons, previous_layer, activation_function="sigmoid"):
         if num_neurons <= 0:
             raise ValueError("Number of neurons cannot be <= 0. Please pass a valid value to the 'num_neurons' parameter.")
@@ -209,4 +332,5 @@ class DenseLayer:
                                                     size=(previous_layer.num_neurons, num_neurons))
 
         # The trained weights of the layer. Only assigned a value after the network is trained (i.e. the train_network() function completes).
-        self.trained_weights = []
+        # Just initialized to be equal to the initial weights
+        self.trained_weights = self.initial_weights.copy()

@@ -1,12 +1,18 @@
 ## NumpyANN: Implementing Artificial Neural Networks using NumPy
 
-**NumPyANN** is an open-source project for building artificial neural networks in **Python 3** using **NumPy** from scratch. The main module of this project is the `nn.py` module which builds the network layers, implements the activations functions, trains the network, makes predictions, and more. 
+As part of a series of 3 projects that uses Python (with the user of NumPy) to build and train artificial neural networks using the genetic algorithm, **NumPyANN** is the second project in the series that builds artificial neural networks in **Python 3** using **NumPy** from scratch. The purpose of this project is to only implement the **forward pass** of a neural network without using a training algorithm.
+
+The main module of this project is the `nn.py` module which builds the network layers, implements the activations functions, trains the network, makes predictions, and more. 
 
 **IMPORTANT** *If you are coming for the tutorial code, then it has been moved to the [TutorialProject](https://github.com/ahmedfgad/NumPyANN/tree/master/TutorialProject) directory on 10 May 2020.*
 
-The purpose of this project is to only implement the **forward pass** of a neural network without using a training algorithm.
+## The Projects in the Series
 
-For training a neural network using the genetic algorithm, check this project (https://github.com/ahmedfgad/NeuralGenetic) in which the genetic algorithm is used for training the network.
+The 3 projects in the series of building and training neural networks using the genetic algorithm are as follows:
+
+1. [GeneticAlgorithmPython](https://github.com/ahmedfgad/GeneticAlgorithmPython): Implements the genetic algorithm.
+2. [NumPyANN](https://github.com/ahmedfgad/NumPyANN): Implements neural networks without being trained (i.e. only the forward pass).
+3. [NeuralGenetic](https://github.com/ahmedfgad/NeuralGenetic/): Trains neural networks implemented in [NumPyANN](https://github.com/ahmedfgad/NumPyANN) using the genetic algorithm implemented in [GeneticAlgorithmPython](https://github.com/ahmedfgad/GeneticAlgorithmPython).
 
 Feel free to leave an issue in this project (https://github.com/ahmedfgad/NumPyANN) in case something is not working properly or to ask for questions. I am also available for e-mails at ahmed.f.gad@gmail.com
 

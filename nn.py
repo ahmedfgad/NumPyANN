@@ -43,7 +43,7 @@ def layers_weights(last_layer, initial=True):
 
 def layers_weights_as_vector(last_layer, initial=True):
     """
-    Creates a list holding the weights of all layers in the network as a single vector.
+    Creates a list holding the weights of each layer in the network as a vector.
 
     last_layer: A reference to the last (output) layer in the network architecture.
     initial: When True, the function returns the initial weights of the layers. When False, the trained weights of the layers are returned. The initial weights are only needed before network training starts. The trained weights are needed to predict the network outputs.
@@ -265,7 +265,7 @@ def predict_outputs(last_layer, data_inputs):
 
 def to_vector(array):
     """
-    Converts a passed NumPy array (of any dimensionality) to its `array`  parameter into a a 1D vector and returns the vector.
+    Converts a passed NumPy array (of any dimensionality) to its `array`  parameter into a 1D vector and returns the vector.
     
     array: The NumPy array to be converted into a 1D vector.
 
@@ -279,7 +279,7 @@ def to_vector(array):
 
 def to_array(vector, shape):
     """
-    Converts a passed vector to its `vector`  parameter into a a NumPy array and returns the array.
+    Converts a passed vector to its `vector`  parameter into a NumPy array and returns the array.
 
     vector: The 1D vector to be converted into an array.
     shape: The target shape of the array.

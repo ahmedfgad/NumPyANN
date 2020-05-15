@@ -1,6 +1,6 @@
 ## NumpyANN: Implementing Artificial Neural Networks using NumPy
 
-As part of a series of 3 projects that uses Python (with the user of NumPy) to build and train artificial neural networks using the genetic algorithm, **NumPyANN** is the second project in the series that builds artificial neural networks in **Python 3** using **NumPy** from scratch. The purpose of this project is to only implement the **forward pass** of a neural network without using a training algorithm.
+As part of a series of 3 projects that uses Python 3 (with the user of NumPy) to build and train artificial neural networks (ANNs) using the genetic algorithm (GA), **NumPyANN** is the second project in the series that builds artificial neural networks in **Python 3** using **NumPy** from scratch. The purpose of this project is to only implement the **forward pass** of a neural network without using a training algorithm.
 
 The main module of this project is the `nn.py` module which builds the network layers, implements the activations functions, trains the network, makes predictions, and more. 
 

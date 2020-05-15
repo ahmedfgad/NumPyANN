@@ -1,6 +1,6 @@
 ## NumpyANN: Implementing Artificial Neural Networks using NumPy
 
-As part of a series of 3 projects that uses Python 3 (with the use of NumPy) to build and train artificial neural networks (ANNs) using the genetic algorithm (GA), **NumPyANN** is the second project in the series that builds artificial neural networks in **Python 3** using **NumPy** from scratch. The purpose of this project is to only implement the **forward pass** of a neural network without using a training algorithm. Currently, it only supports classification and later regression will be also supported.
+As part of a series of 3 projects that uses Python 3 (with the use of NumPy) to build and train artificial neural networks (ANNs) using the genetic algorithm (GA), **NumPyANN** is the second project in the series that builds artificial neural networks in **Python 3** using **NumPy** from scratch. The purpose of this project is to only implement the **forward pass** of a neural network without using a training algorithm. Currently, it only supports classification and later regression will be also supported. Moreover, only one class is supported per sample.
 
 The main module of this project is the `nn.py` module which builds the network layers, implements the activations functions, trains the network, makes predictions, and more. 
 
@@ -18,7 +18,7 @@ Feel free to leave an issue in this project (https://github.com/ahmedfgad/NumPyA
 
 ## Supported Layers
 
-Up to this time, the supported layers of the project are:
+The [NumPyANN](https://github.com/ahmedfgad/NumPyANN) project has a single module named `nn.py` for building the neural networks. The supported layers in this module are:
 
 1. **Input**: Implemented using the `nn.InputLayer` class.
 
@@ -358,19 +358,45 @@ It is not expected to have high accuracy in the predictions because no training 
 
 Please check the `example.py` file which creates an example of building a network using this project.
 
-## Further Reading
+## For More Information
 
-On **10 May 2020**, the project was updated by making a major change to the original code which is using object-oriented programming for creating the layers. The original code is available in the [**TutorialProject**](https://github.com/ahmedfgad/NumPyANN/tree/master/TutorialProject) directory of the GitHub project: https://github.com/ahmedfgad/NumPyANN/tree/master/TutorialProject. 
+To start with coding the genetic algorithm, you can check the tutorial titled [**Genetic Algorithm Implementation in Python**](https://www.linkedin.com/pulse/genetic-algorithm-implementation-python-ahmed-gad) available at these links:
 
-The [original code](https://github.com/ahmedfgad/NumPyANN/tree/master/TutorialProject) is implemented in a tutorial titled [**Artificial Neural Network Implementation using NumPy and Classification of the Fruits360 Image Dataset**](https://www.linkedin.com/pulse/artificial-neural-network-implementation-using-numpy-fruits360-gad) which is available at these links:
+- https://www.linkedin.com/pulse/genetic-algorithm-implementation-python-ahmed-gad
+- https://towardsdatascience.com/genetic-algorithm-implementation-in-python-5ab67bb124a6
+- https://www.kdnuggets.com/2018/07/genetic-algorithm-implementation-python.html 
 
-- https://www.linkedin.com/pulse/artificial-neural-network-implementation-using-numpy-fruits360-gad
-- https://towardsdatascience.com/artificial-neural-network-implementation-using-numpy-and-classification-of-the-fruits360-image-3c56affa4491
-- https://www.kdnuggets.com/2019/02/artificial-neural-network-implementation-using-numpy-and-image-classification.html
+[This tutorial](https://www.linkedin.com/pulse/genetic-algorithm-implementation-python-ahmed-gad) is prepared based on a previous version of the project but it still a good resource to start with coding the genetic algorithm.
 
-The tutorial is still useful for understanding the recent implementation.
+![Fig03](https://user-images.githubusercontent.com/16560492/78830052-a3c19300-79e7-11ea-8b9b-4b343ea4049c.png)
 
-For more information about neural networks and get started with deep learning for computer vision, check my book cited as [**Ahmed Fawzy Gad 'Practical Computer Vision Applications Using Deep Learning with CNNs'. Dec. 2018, Apress, 978-1-4842-4167-7**](https://www.amazon.com/Practical-Computer-Vision-Applications-Learning/dp/1484241665). 
+Get started with the genetic algorithm by reading the tutorial titled [**Introduction to Optimization with Genetic Algorithm**](https://www.linkedin.com/pulse/introduction-optimization-genetic-algorithm-ahmed-gad) which is available at these links:
+
+* https://www.linkedin.com/pulse/introduction-optimization-genetic-algorithm-ahmed-gad
+* https://www.kdnuggets.com/2018/03/introduction-optimization-with-genetic-algorithm.html
+* https://towardsdatascience.com/introduction-to-optimization-with-genetic-algorithm-2f5001d9964b  
+
+![Introduction to Genetic Algorithm](https://user-images.githubusercontent.com/16560492/82078259-26252d00-96e1-11ea-9a02-52a99e1054b9.jpg)
+
+Read about building neural networks in Python through the tutorial titled [**Artificial Neural Network Implementation using NumPy and Classification of the Fruits360 Image Dataset**](https://www.linkedin.com/pulse/artificial-neural-network-implementation-using-numpy-fruits360-gad) available at these links:
+
+* https://www.linkedin.com/pulse/artificial-neural-network-implementation-using-numpy-fruits360-gad
+* https://towardsdatascience.com/artificial-neural-network-implementation-using-numpy-and-classification-of-the-fruits360-image-3c56affa4491
+* https://www.kdnuggets.com/2019/02/artificial-neural-network-implementation-using-numpy-and-image-classification.html
+
+![Building Neural Networks Python](https://user-images.githubusercontent.com/16560492/82078281-30472b80-96e1-11ea-8017-6a1f4383d602.jpg)
+
+Read about training neural networks using the genetic algorithm through the tutorial titled [**Artificial Neural Networks Optimization using Genetic Algorithm with Python**](https://www.linkedin.com/pulse/artificial-neural-networks-optimization-using-genetic-ahmed-gad) available at these links:
+
+- https://www.linkedin.com/pulse/artificial-neural-networks-optimization-using-genetic-ahmed-gad
+- https://towardsdatascience.com/artificial-neural-networks-optimization-using-genetic-algorithm-with-python-1fe8ed17733e
+- https://www.kdnuggets.com/2019/03/artificial-neural-networks-optimization-genetic-algorithm-python.html
+
+![Training Neural Networks using Genetic Algorithm Python](https://user-images.githubusercontent.com/16560492/82078300-376e3980-96e1-11ea-821c-aa6b8ceb44d4.jpg)
+
+You can also check my book cited as [**Ahmed Fawzy Gad 'Practical Computer Vision Applications Using Deep Learning with CNNs'. Dec. 2018, Apress, 978-1-4842-4167-7**](https://www.amazon.com/Practical-Computer-Vision-Applications-Learning/dp/1484241665) which discusses neural networks, convolutional neural networks, deep learning, genetic algorithm, and more.
+
+![Fig04](https://user-images.githubusercontent.com/16560492/78830077-ae7c2800-79e7-11ea-980b-53b6bd879eeb.jpg)
 
 ## Training Neural Networks using the Genetic Algorithm
 
@@ -398,4 +424,4 @@ The project that trains neural networks with the genetic algorithm is available 
 - Paperspace: https://blog.paperspace.com/author/ahmed
 - Heartbeat: https://heartbeat.fritz.ai/@ahmedfgad
 - Towards Data Science: https://towardsdatascience.com/@ahmedfgad   
-- KDnuggets: https://kdnuggets.com/author/ahmed-gad
+- KDnuggets: https://kdnuggets.com/author/ahmed-gad   

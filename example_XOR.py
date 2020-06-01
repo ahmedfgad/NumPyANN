@@ -30,17 +30,17 @@ HL1_neurons = 2
 # Building the network architecture.
 input_layer = pygad.nn.InputLayer(num_inputs)
 hidden_layer1 = pygad.nn.DenseLayer(num_neurons=HL1_neurons, previous_layer=input_layer, activation_function="relu")
-output_layer = pygad.nn.DenseLayer(num_neurons=num_outputs, previous_layer=hidden_layer1, activation_function="sigmoid")
+output_layer = pygad.nn.DenseLayer(num_neurons=num_outputs, previous_layer=hidden_layer1, activation_function="softmax")
 
 # Training the network.
-pygad.nn.train_network(num_epochs=10,
-                       last_layer=output_layer,
-                       data_inputs=data_inputs,
-                       data_outputs=data_outputs,
-                       learning_rate=0.01)
+pygad.nn.train(num_epochs=10,
+               last_layer=output_layer,
+               data_inputs=data_inputs,
+               data_outputs=data_outputs,
+               learning_rate=0.01)
 
 # Using the trained network for predictions.
-predictions = pygad.nn.predict_outputs(last_layer=output_layer, data_inputs=data_inputs)
+predictions = pygad.nn.predict(last_layer=output_layer, data_inputs=data_inputs)
 
 # Calculating some statistics
 num_wrong = numpy.where(predictions != data_outputs)[0]

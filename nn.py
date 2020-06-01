@@ -21,7 +21,7 @@ def layers_weights(last_layer, initial=True):
 
     layer = last_layer
     while "previous_layer" in layer.__init__.__code__.co_varnames:
-        # If the 'initail' parameter is True, append the initial weights. Otherwise, append the trained weights.
+        # If the 'initial' parameter is True, append the initial weights. Otherwise, append the trained weights.
         if initial == True:
             network_weights.append(layer.initial_weights)
         elif initial == False:
@@ -54,7 +54,7 @@ def layers_weights_as_vector(last_layer, initial=True):
 
     layer = last_layer
     while "previous_layer" in layer.__init__.__code__.co_varnames:
-        # If the 'initail' parameter is True, append the initial weights. Otherwise, append the trained weights.
+        # If the 'initial' parameter is True, append the initial weights. Otherwise, append the trained weights.
         if initial == True:
             vector = numpy.reshape(layer.initial_weights, newshape=(layer.initial_weights.size))
 #            vector = DenseLayer.to_vector(matrix=layer.initial_weights)
@@ -85,7 +85,7 @@ def layers_weights_as_matrix(last_layer, vector_weights):
     last_layer: A reference to the last (output) layer in the network architecture.
     vector_weights: The network weights as vectors where the weights of each layer form a single vector.
 
-    Returns a list (network_weights) holding the weights of the layers as a vector.
+    Returns a list (network_weights) holding the weights of the layers as matrices.
     """
     network_weights = []
 
@@ -141,28 +141,59 @@ def layers_activations(last_layer):
     return activations
 
 def sigmoid(sop):
+
     """
     Applies the sigmoid function.
+
     sop: The input to which the sigmoid function is applied.
+
     Returns the result of the sigmoid function.
     """
+
+    if type(sop) in [list, tuple]:
+        sop = numpy.array(sop)
+
     return 1.0 / (1 + numpy.exp(-1 * sop))
 
 def relu(sop):
+
     """
     Applies the rectified linear unit (ReLU) function.
-    sop: The input to which the sigmoid function is applied.
+
+    sop: The input to which the relu function is applied.
+
     Returns the result of the ReLU function.
     """
+
+    if not (type(sop) in [list, tuple, numpy.ndarray]):
+        if sop < 0:
+            return 0
+        else:
+            return sop
+    elif type(sop) in [list, tuple]:
+        sop = numpy.array(sop)
+
     result = sop
     result[sop < 0] = 0
+
     return result
 
-def train_network(num_epochs, 
-                  last_layer, 
-                  data_inputs, 
-                  data_outputs, 
-                  learning_rate):
+def softmax(layer_outputs):
+
+    """
+    Applies the sotmax function.
+
+    sop: The input to which the softmax function is applied.
+
+    Returns the result of the softmax function.
+    """
+    return layer_outputs / (numpy.sum(layer_outputs) + 0.000001)
+
+def train(num_epochs, 
+          last_layer, 
+          data_inputs, 
+          data_outputs, 
+          learning_rate):
     """
     Trains the neural network.
     
@@ -188,6 +219,8 @@ def train_network(num_epochs,
                     r1 = relu(r1)
                 elif activations[idx] == "sigmoid":
                     r1 = sigmoid(r1)
+                elif activations[idx] == "softmax":
+                    r1 = softmax(r1)
             curr_weights = weights[-1]
             r1 = numpy.matmul(r1, curr_weights)
             predicted_label = numpy.where(r1 == numpy.max(r1))[0][0]
@@ -234,7 +267,7 @@ def update_layers_trained_weights(last_layer, final_weights):
         # Go to the previous layer.
         layer = layer.previous_layer
 
-def predict_outputs(last_layer, data_inputs):
+def predict(last_layer, data_inputs):
     """
     Uses the trained weights for predicting the samples' outputs.
 
@@ -259,6 +292,8 @@ def predict_outputs(last_layer, data_inputs):
                 r1 = relu(r1)
             elif activation == "sigmoid":
                 r1 = sigmoid(r1)
+            elif activation == "softmax":
+                r1 = softmax(r1)
         predicted_label = numpy.where(r1 == numpy.max(r1))[0][0]
         predictions[sample_idx] = predicted_label
     return predictions
@@ -316,7 +351,7 @@ class DenseLayer:
         # Number of neurons in the dense layer.
         self.num_neurons = num_neurons
 
-        supported_activation_functions = ("sigmoid", "relu")
+        supported_activation_functions = ("sigmoid", "relu", "softmax")
         if not (activation_function in supported_activation_functions):
             raise ValueError("The specified activation function '{activation_function}' is not among the supported activation functions {supported_activation_functions}. Please use one of the supported functions.".format(activation_function=activation_function, supported_activation_functions=supported_activation_functions))
         self.activation_function = activation_function
@@ -331,6 +366,6 @@ class DenseLayer:
                                                     high=0.1,
                                                     size=(previous_layer.num_neurons, num_neurons))
 
-        # The trained weights of the layer. Only assigned a value after the network is trained (i.e. the train_network() function completes).
+        # The trained weights of the layer. Only assigned a value after the network is trained (i.e. the train() function completes).
         # Just initialized to be equal to the initial weights
         self.trained_weights = self.initial_weights.copy()

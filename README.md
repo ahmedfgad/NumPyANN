@@ -38,8 +38,9 @@ The source code of the PyGAD' modules is found in the following GitHub projects:
 
 - [pygad](https://github.com/ahmedfgad/GeneticAlgorithmPython): (https://github.com/ahmedfgad/GeneticAlgorithmPython)
 - [pygad.nn](https://github.com/ahmedfgad/NumPyANN): https://github.com/ahmedfgad/NumPyANN
-
 - [pygad.gann](https://github.com/ahmedfgad/NeuralGenetic): https://github.com/ahmedfgad/NeuralGenetic
+- [pygad.cnn](https://github.com/ahmedfgad/NumPyCNN): https://github.com/ahmedfgad/NumPyCNN
+- [pygad.gacnn](https://github.com/ahmedfgad/CNNGenetic): https://github.com/ahmedfgad/CNNGenetic
 
 The documentation of PyGAD is available at [Read The Docs](https://pygad.readthedocs.io/) https://pygad.readthedocs.io.
 
@@ -56,6 +57,57 @@ If you built a project that uses PyGAD, then please drop an e-mail to ahmed.f.ga
 - Preferably, a link that directs the readers to your project
 
 Please check the **Contact Us** section for more contact details.
+
+# Example
+
+Check the [PyGAD's documentation](https://pygad.readthedocs.io/en/latest/README_pygad_nn_ReadTheDocs.html) for information about the implementation of this example.
+
+```python
+import numpy
+import pygad.nn
+
+# Preparing the NumPy array of the inputs.
+data_inputs = numpy.array([[1, 1],
+                           [1, 0],
+                           [0, 1],
+                           [0, 0]])
+
+# Preparing the NumPy array of the outputs.
+data_outputs = numpy.array([0, 
+                            1, 
+                            1, 
+                            0])
+
+# The number of inputs (i.e. feature vector length) per sample
+num_inputs = data_inputs.shape[1]
+# Number of outputs per sample
+num_outputs = 2
+
+HL1_neurons = 2
+
+# Building the network architecture.
+input_layer = pygad.nn.InputLayer(num_inputs)
+hidden_layer1 = pygad.nn.DenseLayer(num_neurons=HL1_neurons, previous_layer=input_layer, activation_function="relu")
+output_layer = pygad.nn.DenseLayer(num_neurons=num_outputs, previous_layer=hidden_layer1, activation_function="softmax")
+
+# Training the network.
+pygad.nn.train(num_epochs=10,
+               last_layer=output_layer,
+               data_inputs=data_inputs,
+               data_outputs=data_outputs,
+               learning_rate=0.01)
+
+# Using the trained network for predictions.
+predictions = pygad.nn.predict(last_layer=output_layer, data_inputs=data_inputs)
+
+# Calculating some statistics
+num_wrong = numpy.where(predictions != data_outputs)[0]
+num_correct = data_outputs.size - num_wrong.size
+accuracy = 100 * (num_correct/data_outputs.size)
+print("Number of correct classifications : {num_correct}.".format(num_correct=num_correct))
+print("Number of wrong classifications : {num_wrong}.".format(num_wrong=num_wrong.size))
+print("Classification accuracy : {accuracy}.".format(accuracy=accuracy))
+```
 
 # For More Information
 

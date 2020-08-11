@@ -10,6 +10,12 @@ The library is under active development and more features in the genetic algorit
 
 Before using [NumPyANN](https://github.com/ahmedfgad/NumPyCNN), install PyGAD.
 
+# Donation
+
+You can donate via [Open Collective](https://opencollective.com/pygad): [opencollective.com/pygad](https://opencollective.com/pygad). 
+
+To donate using PayPal, use either this link: [paypal.me/ahmedfgad](https://paypal.me/ahmedfgad) or the e-mail address ahmed.f.gad@gmail.com.
+
 # Tutorial Project
 
 **IMPORTANT** If you are coming for the code of the tutorial titled **[Artificial Neural Network Implementation using NumPy and Classification of the Fruits360 Image Dataset](https://www.linkedin.com/pulse/artificial-neural-network-implementation-using-numpy-fruits360-gad)**, then it has been moved to the [TutorialProject](https://github.com/ahmedfgad/NumPyANN/tree/master/TutorialProject) directory on 10 May 2020.

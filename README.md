@@ -1,12 +1,12 @@
 # NumPyANN: Building Neural Networks using NumPy
 
-[NumPyANN](https://github.com/ahmedfgad/NumPyCNN) is a Python project for training neural networks using NumPy. 
+[NumPyANN](https://github.com/ahmedfgad/NumPyCNN) is a Python project for building artificial neural networks using NumPy. 
 
-[NumPyANN](https://github.com/ahmedfgad/NumPyCNN) is part of [PyGAD](https://pypi.org/project/pygad) which is an open-source Python 3 library for implementing the genetic algorithm and optimizing machine learning algorithms. 
+[NumPyANN](https://github.com/ahmedfgad/NumPyCNN) is part of [PyGAD](https://pypi.org/project/pygad) which is an open-source Python 3 library for implementing the genetic algorithm and optimizing machine learning algorithms. Both regression and classification neural networks are supported starting from PyGAD 2.7.0.
 
 Check documentation of the [NeuralGenetic](https://github.com/ahmedfgad/NeuralGenetic) project in the PyGAD's documentation: https://pygad.readthedocs.io/en/latest/README_pygad_nn_ReadTheDocs.html
 
-The library is under active development and more features in the genetic algorithm will be added like working with binary problems. This is in addition to supporting more machine learning algorithms.
+The library is under active development and more features are added regularly. If you want a feature to be supported, please check the **Contact Us** section to send a request.
 
 Before using [NumPyANN](https://github.com/ahmedfgad/NumPyCNN), install PyGAD.
 

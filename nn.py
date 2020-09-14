@@ -39,7 +39,7 @@ def layers_weights(last_layer, initial=True):
     # Currently, the weights of the layers are in the reverse order. In other words, the weights of the first layer are at the last index of the 'network_weights' list while the weights of the last layer are at the first index.
     # Reversing the 'network_weights' list to order the layers' weights according to their location in the network architecture (i.e. the weights of the first layer appears at index 0 of the list).
     network_weights.reverse()
-    return numpy.array(network_weights)
+    return network_weights
 
 def layers_weights_as_vector(last_layer, initial=True):
     """
@@ -113,7 +113,7 @@ def layers_weights_as_matrix(last_layer, vector_weights):
     # Currently, the weights of the layers are in the reverse order. In other words, the weights of the first layer are at the last index of the 'network_weights' list while the weights of the last layer are at the first index.
     # Reversing the 'network_weights' list to order the layers' weights according to their location in the network architecture (i.e. the weights of the first layer appears at index 0 of the list).
     network_weights.reverse()
-    return numpy.array(network_weights)
+    return network_weights
 
 def layers_activations(last_layer):
     """
@@ -192,8 +192,9 @@ def softmax(layer_outputs):
 def train(num_epochs, 
           last_layer, 
           data_inputs, 
-          data_outputs, 
-          learning_rate):
+          data_outputs,
+          problem_type="classification",
+          learning_rate=0.01):
     """
     Trains the neural network.
     
@@ -201,8 +202,13 @@ def train(num_epochs,
     last_layer: Reference to the last (output) layer in the network architecture.
     data_inputs: Data features.
     data_outputs: Data outputs.
-    learning_rate: Learning rate.
+    problem_type: Can be either classification or regression to define the problem type.
+    learning_rate: Learning rate which defaults to 0.01.
     """
+    
+    if not (problem_type in ["classification", "regression"]):
+        raise ValueError("The value of the problem_type parameter can be either classification or regression but {problem_type_val} found.".format(problem_type_val=problem_type))
+    
     # To fetch the initial weights of the layer, the 'initial' argument is set to True.
     weights = layers_weights(last_layer, initial=True)
     activations = layers_activations(last_layer)
@@ -221,10 +227,18 @@ def train(num_epochs,
                     r1 = sigmoid(r1)
                 elif activations[idx] == "softmax":
                     r1 = softmax(r1)
+                elif activations[idx] == None:
+                    pass
+
             curr_weights = weights[-1]
             r1 = numpy.matmul(r1, curr_weights)
-            predicted_label = numpy.where(r1 == numpy.max(r1))[0][0]
-            network_error = network_error + abs(predicted_label - data_outputs[sample_idx])
+
+            if problem_type == "classification":
+                prediction = numpy.where(r1 == numpy.max(r1))[0][0]
+            else:
+                prediction = r1
+
+            network_error = network_error + numpy.mean(numpy.abs((prediction - data_outputs[sample_idx])))
 
         # Updating the network weights once after completing an epoch (i.e. passing through all the samples).
         weights = update_weights(weights=weights,
@@ -246,9 +260,11 @@ def update_weights(weights, network_error, learning_rate):
 
     It returns the new weights.
     """
-    weights = numpy.array(weights)
-    new_weights = weights - network_error * learning_rate * weights
-    return new_weights
+    # weights = numpy.array(weights)
+    for layer_idx in range(len(weights)):
+        weights[layer_idx] = network_error * learning_rate * weights[layer_idx]
+
+    return weights
 
 def update_layers_trained_weights(last_layer, final_weights):
     """
@@ -267,15 +283,19 @@ def update_layers_trained_weights(last_layer, final_weights):
         # Go to the previous layer.
         layer = layer.previous_layer
 
-def predict(last_layer, data_inputs):
+def predict(last_layer, data_inputs, problem_type="classification"):
     """
     Uses the trained weights for predicting the samples' outputs.
 
     last_layer: A reference to the last (output) layer in the network architecture.
     data_inputs: Data features.
+    problem_type: Can be either classification or regression to define the problem type.
 
     Returns the predictions of all samples.
     """
+    if not (problem_type in ["classification", "regression"]):
+        raise ValueError("The value of the problem_type parameter can be either classification or regression but {problem_type_val} found.".format(problem_type_val=problem_type))
+    
     # To fetch the trained weights of the layer, the 'initial' argument is set to False.
     weights = layers_weights(last_layer, initial=False)
     activations = layers_activations(last_layer)
@@ -283,7 +303,7 @@ def predict(last_layer, data_inputs):
     if len(weights) != len(activations):
         raise TypeError("The length of layers {num_layers} is not equal to the number of activations functions {num_activations} and they must be equal.".format(num_layers=len(weights), num_activations=len(activations)))
 
-    predictions = numpy.zeros(shape=(data_inputs.shape[0]))
+    predictions = []
     for sample_idx in range(data_inputs.shape[0]):
         r1 = data_inputs[sample_idx, :]
         for curr_weights, activation in zip(weights, activations):
@@ -294,8 +314,16 @@ def predict(last_layer, data_inputs):
                 r1 = sigmoid(r1)
             elif activation == "softmax":
                 r1 = softmax(r1)
-        predicted_label = numpy.where(r1 == numpy.max(r1))[0][0]
-        predictions[sample_idx] = predicted_label
+            elif activation == None:
+                pass
+
+        if problem_type == "classification":
+            prediction = numpy.where(r1 == numpy.max(r1))[0][0]
+        else:
+            prediction = r1
+
+        predictions.append(prediction)
+
     return predictions
 
 def to_vector(array):
@@ -351,7 +379,7 @@ class DenseLayer:
         # Number of neurons in the dense layer.
         self.num_neurons = num_neurons
 
-        supported_activation_functions = ("sigmoid", "relu", "softmax")
+        supported_activation_functions = ("sigmoid", "relu", "softmax", "None")
         if not (activation_function in supported_activation_functions):
             raise ValueError("The specified activation function '{activation_function}' is not among the supported activation functions {supported_activation_functions}. Please use one of the supported functions.".format(activation_function=activation_function, supported_activation_functions=supported_activation_functions))
         self.activation_function = activation_function

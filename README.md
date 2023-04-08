@@ -8,13 +8,12 @@ Check documentation of the [NeuralGenetic](https://github.com/ahmedfgad/NeuralGe
 
 The library is under active development and more features are added regularly. If you want a feature to be supported, please check the **Contact Us** section to send a request.
 
-Before using [NumPyANN](https://github.com/ahmedfgad/NumPyCNN), install PyGAD.
-
 # Donation
 
-You can donate via [Open Collective](https://opencollective.com/pygad): [opencollective.com/pygad](https://opencollective.com/pygad). 
-
-To donate using PayPal, use either this link: [paypal.me/ahmedfgad](https://paypal.me/ahmedfgad) or the e-mail address ahmed.f.gad@gmail.com.
+- [Credit/Debit Card](https://donate.stripe.com/eVa5kO866elKgM0144): https://donate.stripe.com/eVa5kO866elKgM0144
+- [Open Collective](https://opencollective.com/pygad): [opencollective.com/pygad](https://opencollective.com/pygad)
+- PayPal: Use either this link: [paypal.me/ahmedfgad](https://paypal.me/ahmedfgad) or the e-mail address ahmed.f.gad@gmail.com
+- Interac e-Transfer: Use e-mail address ahmed.f.gad@gmail.com
 
 # Tutorial Project
 
@@ -22,15 +21,13 @@ To donate using PayPal, use either this link: [paypal.me/ahmedfgad](https://payp
 
 # Installation
 
-To install [PyGAD](https://pypi.org/project/pygad), simply use pip to download and install the library from [PyPI](https://pypi.org/project/pygad) (Python Package Index). The library lives a PyPI at this page https://pypi.org/project/pygad.
+To install [PyGAD](https://pypi.org/project/pygad), simply use pip to download and install the library from [PyPI](https://pypi.org/project/pygad) (Python Package Index). The library is at PyPI at this page https://pypi.org/project/pygad.
 
-For Windows, issue the following command:
+Install PyGAD with the following command:
 
 ```python
-pip3 install pygad
+pip install pygad
 ```
-
-PyGAD is developed in Python 3.7.3 and depends on NumPy for creating and manipulating arrays and Matplotlib for creating figures. The exact NumPy version used in developing PyGAD is 1.16.4. For Matplotlib, the version is 3.1.0.
 
 To get started with PyGAD, please read the documentation at [Read The Docs](https://pygad.readthedocs.io/) https://pygad.readthedocs.io.
 
@@ -77,7 +74,7 @@ import numpy
 function_inputs = [4,-2,3.5,5,-11,-4.7]
 desired_output = 44
 
-def fitness_func(solution, solution_idx):
+def fitness_func(ga_instance, solution, solution_idx):
     output = numpy.sum(solution*function_inputs)
     fitness = 1.0 / (numpy.abs(output - desired_output) + 0.000001)
     return fitness
